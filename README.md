@@ -18,7 +18,12 @@ Early development. The first goal is a safe `doctor` command that helps operator
 ```bash
 python3 agentops_healthkit.py doctor
 python3 agentops_healthkit.py doctor --json
+python3 agentops_healthkit.py doctor --profile profiles/local-agentops.json
 ```
+
+## Example Checks
+
+Default checks look for common local automation commands such as `codex`, `claude`, `n8n`, `node`, `python3`, and `gh`. Default port checks cover common local app and bridge ports: `3000`, `3417`, and `5678`.
 
 ## Safety
 

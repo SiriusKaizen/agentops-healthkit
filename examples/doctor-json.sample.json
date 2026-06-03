@@ -1,0 +1,14 @@
+[
+  {
+    "kind": "command",
+    "target": "python3",
+    "ok": true,
+    "detail": "found at /usr/bin/python3"
+  },
+  {
+    "kind": "port",
+    "target": "127.0.0.1:3000",
+    "ok": false,
+    "detail": "ConnectionRefusedError"
+  }
+]
