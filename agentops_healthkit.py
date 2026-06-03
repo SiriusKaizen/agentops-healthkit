@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from pathlib import Path
 import shutil
 import socket
 import sys
@@ -40,13 +41,27 @@ def check_port(host: str, port: int, timeout: float) -> CheckResult:
     return CheckResult("port", f"{host}:{port}", True, "reachable")
 
 
+def load_profile(path: str | None) -> dict[str, object]:
+    if not path:
+        return {}
+    data = json.loads(Path(path).read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError("profile must be a JSON object")
+    return data
+
+
 def run_doctor(args: argparse.Namespace) -> int:
-    commands = args.command or DEFAULT_COMMANDS
-    ports = args.port or ([] if args.no_default_ports else DEFAULT_PORTS)
+    profile = load_profile(args.profile)
+    profile_commands = profile.get("commands", DEFAULT_COMMANDS)
+    profile_ports = profile.get("ports", DEFAULT_PORTS)
+    profile_host = str(profile.get("host", args.host))
+
+    commands = args.command or list(profile_commands)
+    ports = args.port or ([] if args.no_default_ports else list(profile_ports))
 
     results: list[CheckResult] = []
     results.extend(check_command(command) for command in commands)
-    results.extend(check_port(args.host, port, args.timeout) for port in ports)
+    results.extend(check_port(profile_host, int(port), args.timeout) for port in ports)
 
     if args.json:
         print(json.dumps([asdict(result) for result in results], indent=2))
@@ -68,6 +83,7 @@ def build_parser() -> argparse.ArgumentParser:
     doctor.add_argument("--timeout", type=float, default=0.5, help="Port timeout in seconds")
     doctor.add_argument("--command", action="append", help="Command to check")
     doctor.add_argument("--port", type=int, action="append", help="TCP port to check")
+    doctor.add_argument("--profile", help="JSON profile with commands, ports, and host")
     doctor.add_argument("--no-default-ports", action="store_true", help="Skip default port checks")
     doctor.set_defaults(func=run_doctor)
 

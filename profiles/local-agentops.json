@@ -1,0 +1,5 @@
+{
+  "host": "127.0.0.1",
+  "commands": ["codex", "claude", "n8n", "node", "python3", "gh"],
+  "ports": [3000, 3417, 5678]
+}
