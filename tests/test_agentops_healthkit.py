@@ -25,6 +25,12 @@ class AgentOpsHealthkitTests(unittest.TestCase):
         exit_code = agentops_healthkit.main(["doctor", "--command", "python3", "--no-default-ports"])
         self.assertEqual(exit_code, 0)
 
+    def test_only_failures_does_not_change_exit_code(self):
+        exit_code = agentops_healthkit.main(
+            ["doctor", "--command", "definitely-not-a-real-command", "--no-default-ports", "--only-failures"]
+        )
+        self.assertEqual(exit_code, 1)
+
 
 if __name__ == "__main__":
     unittest.main()

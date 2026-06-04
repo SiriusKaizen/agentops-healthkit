@@ -62,11 +62,12 @@ def run_doctor(args: argparse.Namespace) -> int:
     results: list[CheckResult] = []
     results.extend(check_command(command) for command in commands)
     results.extend(check_port(profile_host, int(port), args.timeout) for port in ports)
+    display_results = [result for result in results if not result.ok] if args.only_failures else results
 
     if args.json:
-        print(json.dumps([asdict(result) for result in results], indent=2))
+        print(json.dumps([asdict(result) for result in display_results], indent=2))
     else:
-        for result in results:
+        for result in display_results:
             marker = "ok" if result.ok else "warn"
             print(f"[{marker}] {result.kind} {result.target}: {result.detail}")
 
@@ -85,6 +86,7 @@ def build_parser() -> argparse.ArgumentParser:
     doctor.add_argument("--port", type=int, action="append", help="TCP port to check")
     doctor.add_argument("--profile", help="JSON profile with commands, ports, and host")
     doctor.add_argument("--no-default-ports", action="store_true", help="Skip default port checks")
+    doctor.add_argument("--only-failures", action="store_true", help="Only print failed checks")
     doctor.set_defaults(func=run_doctor)
 
     return parser

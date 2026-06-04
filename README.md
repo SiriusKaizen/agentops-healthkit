@@ -19,6 +19,7 @@ Early development. The first goal is a safe `doctor` command that helps operator
 python3 agentops_healthkit.py doctor
 python3 agentops_healthkit.py doctor --json
 python3 agentops_healthkit.py doctor --profile profiles/local-agentops.json
+python3 agentops_healthkit.py doctor --only-failures
 ```
 
 ## Example Checks
