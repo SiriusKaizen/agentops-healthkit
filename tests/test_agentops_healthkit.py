@@ -31,6 +31,36 @@ class AgentOpsHealthkitTests(unittest.TestCase):
         )
         self.assertEqual(exit_code, 1)
 
+    def test_valid_roster_passes(self):
+        roster = {
+            "agents": [
+                {
+                    "id": "agentops",
+                    "name": "Agent Operations",
+                    "capabilities": ["health-checks"],
+                    "authority": "read-only",
+                    "risk": "low",
+                    "boundaries": ["Reports drift without changing live systems"],
+                }
+            ]
+        }
+        self.assertEqual(agentops_healthkit.validate_roster(roster), [])
+
+    def test_roster_requires_boundaries(self):
+        roster = {
+            "agents": [
+                {
+                    "id": "operator-ceo",
+                    "name": "Operator CEO",
+                    "capabilities": ["planning"],
+                    "authority": "approval-required",
+                    "risk": "medium",
+                }
+            ]
+        }
+        issues = agentops_healthkit.validate_roster(roster)
+        self.assertTrue(any("boundaries" in issue for issue in issues))
+
 
 if __name__ == "__main__":
     unittest.main()

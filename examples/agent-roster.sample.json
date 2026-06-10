@@ -1,0 +1,26 @@
+{
+  "agents": [
+    {
+      "id": "operator-ceo",
+      "name": "Operator CEO",
+      "capabilities": ["planning", "prioritization", "handoff-review"],
+      "authority": "approval-required",
+      "risk": "medium",
+      "boundaries": [
+        "Does not execute provider calls without human approval",
+        "Does not send external messages from sample workflows"
+      ]
+    },
+    {
+      "id": "agentops",
+      "name": "Agent Operations",
+      "capabilities": ["health-checks", "rollback-hygiene", "evidence-capture"],
+      "authority": "read-only",
+      "risk": "low",
+      "boundaries": [
+        "Reads local status only",
+        "Reports drift instead of changing live systems"
+      ]
+    }
+  ]
+}

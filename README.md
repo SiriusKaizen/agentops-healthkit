@@ -20,11 +20,16 @@ python3 agentops_healthkit.py doctor
 python3 agentops_healthkit.py doctor --json
 python3 agentops_healthkit.py doctor --profile profiles/local-agentops.json
 python3 agentops_healthkit.py doctor --only-failures
+python3 agentops_healthkit.py roster-check examples/agent-roster.sample.json
 ```
 
 ## Example Checks
 
 Default checks look for common local automation commands such as `codex`, `claude`, `n8n`, `node`, `python3`, and `gh`. Default port checks cover common local app and bridge ports: `3000`, `3417`, and `5678`.
+
+## Agent Roster Checks
+
+`roster-check` validates a sanitized JSON inventory of local agents. It checks that each entry has an id, name, capabilities, authority level, risk level, and explicit boundaries. The sample file uses placeholder names and does not include real routes, tokens, chat ids, or private operator topology.
 
 ## Safety
 
