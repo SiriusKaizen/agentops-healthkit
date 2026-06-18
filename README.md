@@ -31,6 +31,10 @@ Default checks look for common local automation commands such as `codex`, `claud
 
 `roster-check` validates a sanitized JSON inventory of local agents. It checks that each entry has an id, name, capabilities, authority level, risk level, and explicit boundaries. The sample file uses placeholder names and does not include real routes, tokens, chat ids, or private operator topology.
 
+## Real-World Use Case
+
+This project is for operators who run several local AI tools and need a quick, repeatable health check before starting work. It focuses on visible signals such as command availability, local ports, and sanitized agent boundaries so maintainers can debug setup drift without exposing secrets or private infrastructure details.
+
 ## Safety
 
 This tool only checks command availability and local port connectivity. It does not print tokens, `.env` values, OAuth files, or request bodies.
